@@ -1,5 +1,5 @@
 import React ,{useEffect, useState} from 'react'
-import axios from "axios";
+import axios from "axios" ;
 
 export default function MainPage() {
 //state for the form feilds
@@ -140,9 +140,9 @@ Amount in source currency
                     </div>
 
 
- <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">
+ <button type="button" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">
        
-      Get the target Currency</button>  
+      Get the target Currency</button> 
             </form>
         </section>
     </div>
