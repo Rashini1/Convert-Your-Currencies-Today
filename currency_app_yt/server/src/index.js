@@ -10,7 +10,7 @@ app.use(cors());
 
 //all currencies
 app.get("/getAllCurrencies" , async (req, res)=>{
-const nameURL ="https://openexchangerates.org/api/currencies.json?app_id=140c36d1662b426f9e09b40d4f10e17a";
+const nameURL ="https://openexchangerates.org/api/currencies.json?app_id=9001ef57a2994bf8b1afe89808456526";
  
 
 
@@ -25,29 +25,35 @@ return res.json(nameData);
 
 });
 
-//get the target amount
-app.get("/convert",async(req ,res)=>{
-    const {date,sourceCurrency,targetCurrency,amountInSourceCurrency,}=req.query;
+ app.get("/convert", async (req, res) => {
+  const { sourceCurrency, targetCurrency, amountInSourceCurrency } = req.query;
 
-try{
- 
-    const dataUrl ="https://openexchangerates.org/api/historical/${date}.json?app_id=140c36d1662b426f9e09b40d4f10e17a"
+  if (!sourceCurrency || !targetCurrency || !amountInSourceCurrency) {
+    return res.status(400).json({ error: "Missing required query parameters" });
+  }
 
-    const dataResponce = await axios.get(dataUrl);
-    const rates =dataResponce.data.rates;
+  try {
+    const dataUrl = `https://openexchangerates.org/api/latest.json?app_id=9001ef57a2994bf8b1afe89808456526`;
+    const response = await axios.get(dataUrl);
+    const rates = response.data.rates;
 
-//rates
-const sourceRate =rates[sourceCurrency];
-const targetRate =rates[targetCurrency];
+    const sourceRate = rates[sourceCurrency];
+    const targetRate = rates[targetCurrency];
+    const amount = parseFloat(amountInSourceCurrency);
 
-//final target val
-const targetAmount =(targetRate / sourceRate) * amountInSourceCurrency;
-return res.json(targetAmount);
- 
- }catch(err){
-console.error(err);
-}
+    if (!sourceRate || !targetRate) {
+      return res.status(400).json({ error: "Invalid currency code" });
+    }
+
+    const targetAmount = (targetRate / sourceRate) * amount;
+
+    return res.json(targetAmount);
+  } catch (err) {
+    console.error("Conversion error:", err.response ? err.response.data : err.message);
+    return res.status(500).json({ error: "Failed to fetch conversion rates" });
+  }
 });
+
 
 //listen to a part 
 app.listen(5000, () => {

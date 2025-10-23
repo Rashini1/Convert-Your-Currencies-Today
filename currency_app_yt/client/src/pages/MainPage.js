@@ -126,13 +126,13 @@ className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
 
 <div className="mb-4">
 <label 
-htmlFor=""
+htmlFor={amountInSourceCurrency} 
 className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
 >
 Amount in source currency
 </label>
  <input 
-  onChange={(e)=>setAmountInSourceCurrency(e.target.value)}
+  onChange={(e)=>setAmountInSourceCurrency(Number(e.target.value))}
     type="number" 
     id={amountInSourceCurrency} 
     name={amountInSourceCurrency}
@@ -140,7 +140,7 @@ Amount in source currency
                     </div>
 
 
- <button type="button" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">
+ <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">
        
       Get the target Currency</button> 
             </form>
